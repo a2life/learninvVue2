@@ -1,11 +1,11 @@
 <template>
     <div class="main">
         <div class="degreeC">
-            <label id="labelForDegreeC">Degree C</label>
-            <input id="degreeC" v-model.lazy="degreeC" value="0.0"/>
+            <label for="degreeC">Degree C</label>
+            <input id="degreeC" v-model.lazy="degreeC" value="0.0" ref="degreeC" @blur="dataFormat"/>
         </div>
         <div class="ferhC">
-            <label id="labelForDegreeF">Degree F</label>
+            <label for="degreeF">Degree F</label>
             <input id="degreeF" v-model.lazy="degreeF" value="32.0">
         </div>
 
@@ -25,7 +25,8 @@
             name: 'MainApp',
             data() {
                 return {
-                  degreeCSeed: '0.0'
+              //    degreeCSeed: '0.0'
+                    degreeC: '0.0'
                 }
             },
             computed: {
@@ -35,17 +36,15 @@
                     }
                     ,
                     set(newValue: string): void {
-                        this.degreeCSeed = numeral((parseFloat(newValue) - 32) * 5 / 9).format('0.0')
+                        //this.degreeCSeed = numeral((parseFloat(newValue) - 32) * 5 / 9).format('0.0')
+                        this.degreeC = numeral((parseFloat(newValue) - 32) * 5 / 9).format('0.0')
                     }
 
-                },
-                degreeC: {
-                    get(): string {
-                        return numeral(parseFloat(this.degreeCSeed)).format('0.0')
-                    },
-                    set(newValue: string): void {
-                        this.degreeCSeed = numeral(parseFloat(newValue)).format('0.0');
-                    }
+                }
+            },
+            methods: {
+                dataFormat: function(){
+                    (<HTMLInputElement>this.$refs['degreeC']).value = numeral(parseFloat(this.degreeC)).format('0.0')
                 }
             }
 
