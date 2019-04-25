@@ -1,14 +1,12 @@
 <template>
-    <div class="main">
-        <div class="degreeC">
-            <label for="degreeC">Degree C</label>
-            <input id="degreeC" v-model.lazy="degreeC" value="0.0" ref="degreeC" @blur="dataFormat"/>
-        </div>
-        <div class="ferhC">
-            <label for="degreeF">Degree F</label>
-            <input id="degreeF" v-model.lazy="degreeF" value="32.0">
-        </div>
-
+    <div class="container">
+        <form class="mt-5">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" v-model="email" type="email" clas="form-control form-control-lg">
+            </div>
+            <button type="submit"  @click.prevent="process" class="btn btn-primary">Submit</button>
+        </form>
 
     </div>
 </template>
@@ -17,37 +15,22 @@
     /**
      * Use of getter and setter to computed value to simplify two way conversion of temperature.
      */
-    import Vue from 'vue';
-    import * as numeral from 'numeral'
+    import Vue from 'vue'
+
 
     export default Vue.extend(
         {
-            name: 'MainApp',
             data() {
                 return {
-              //    degreeCSeed: '0.0'
-                    degreeC: '0.0'
-                }
-            },
-            computed: {
-                degreeF: {
-                    get(): string {
-                        return numeral((parseFloat(this.degreeC) * 9 / 5) + 32).format('0.0')
-                    }
-                    ,
-                    set(newValue: string): void {
-                        //this.degreeCSeed = numeral((parseFloat(newValue) - 32) * 5 / 9).format('0.0')
-                        this.degreeC = numeral((parseFloat(newValue) - 32) * 5 / 9).format('0.0')
-                    }
-
+                    email: "a2life@a2life.info"
                 }
             },
             methods: {
-                dataFormat: function(){
-                    (<HTMLInputElement>this.$refs['degreeC']).value = numeral(parseFloat(this.degreeC)).format('0.0')
+                process: function(){
+
+                    alert ('submitted ' + this.email)
                 }
             }
-
         }
     )
 </script>
@@ -55,5 +38,7 @@
 <style scoped>
     .main {
         color: green;
+
     }
+
 </style>
