@@ -54,7 +54,7 @@
             methods: {
                 fetchAsteroids : function () {
                     let apiKey = 'DEMO_KEY'; //replace with real apikey. demo key is for limited use only
-       
+
                     let url = 'https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=' + apiKey;
                     axios.get(url)
                         .then((res) => {
