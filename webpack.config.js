@@ -2,7 +2,7 @@ let path = require('path');
 let webpack = require('webpack');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin'); //new in vue-loader 15
-
+const MiniCssExtractPlugin=require('mini-css-extract-plugin')// extract css from bundle.
 module.exports = {
     entry: './src/main.ts',
     output: {
@@ -40,8 +40,13 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ['vue-style-loader', 'css-loader']
+                use: [
+                   process.env.NODE_ENV !=='production'
+                    ? 'vue-style-loader'
+                       : MiniCssExtractPlugin.loader,
+                    'css-loader'
 
+            ]
             },
             {
                 test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
@@ -69,7 +74,13 @@ module.exports = {
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: './src/index.ejs'
-        })
+        }),
+        new MiniCssExtractPlugin(
+            {
+                filename: '[name].css'
+
+            }
+        )
     ],
 
     devServer: {
