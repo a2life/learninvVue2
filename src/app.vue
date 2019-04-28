@@ -1,13 +1,19 @@
 <template>
     <div class="container">
-        <div class="card mt-5">
+        <div class="card mt-5" v-cloak>
             <h2 class="card-header">Near-Earth Objects</h2>
+            <transition name="flippy">
+                <div class="m-3" v-cloak v-if="numAsteroids>0 && showSummary">
+                    <p>Showing {{numAsteroids}} items</p>
+                    <p>{{closestObject.name}} has the shortest missing distance of {{closestObject.miles}} miles </p>
+                </div>
+            </transition>
+
             <div class="m-3">
-                <p>Showing {{numAsteroids}} items</p>
-                <p>{{closestObject.name}} has the shortest missing distance of {{closestObject.miles}} miles </p>
+                <a href="#" @click="showSummary = !showSummary">Show/hide Summary</a>
             </div>
 
-            <table class="table" v-cloak>
+            <table class="table table-striped" v-cloak>
 
                 <thead class="thead-light">
                 <tr>
@@ -19,8 +25,9 @@
                 </tr>
                 `
                 </thead>
-                <tbody>
-                <tr v-for="(a,index) in asteroids" :key="a.neo_reference_id">
+                <tbody v-cloak is="transition-group" name="neo-list">
+                <tr v-for="(a,index) in asteroids" :key="a.neo_reference_id"
+                    :class="[{missingData:isDataMissing(a)}, 'shadow-sm']" >
                     <td>{{index+1}}</td>
                     <td>{{a.name}}</td>
                     <td>{{getCloseApproachDate(a)}}</td>
@@ -54,7 +61,9 @@
         {
             data() {
                 return {
-                    asteroids: [] as any
+                    asteroids: [] as any,
+                    showSummary:true
+
                 }
             },
             computed: {
@@ -74,7 +83,7 @@
                     let sortedNeos = simpleNeos.sort(function (a: any, b: any) {
                         return a.miles - b.miles;
                     });
-                    return sortedNeos[0]
+                    return sortedNeos[0] || {name:"",miles:NaN} //if sortedNeos is undefined still return something
                 }
             },
             methods: {
@@ -96,11 +105,20 @@
                 },
                 remove: function (index: number) {
                     this.asteroids.splice(index, 1)
+                },
+                getRowStyle: function(a:any){
+                    if (a.close_approach_data.length===0){
+                     return {border: 'solid 3px red', color:'red'}
+                    }
+                },
+                isDataMissing: function(a:any){
+                    return (a.close_approach_data.length===0)
                 }
+
             },
 
             created: function () {
-                (this as any).fetchAsteroids();
+                this.fetchAsteroids();
             }
 
 
@@ -112,4 +130,23 @@
     [v-cloak] {
         display: none
     }
+    .missingData {
+        border: solid 3px red;
+        color: red;
+    }
+    .flippy-leave-to, .flippy-enter {
+       transform: translateX(150px) rotate(30deg);
+        opacity:0;
+    }
+    .flippy-enter-active, .flippy-leave-active {
+        transition: all .5s ease;
+    }
+    .neo-list-leave-to, .neo-list-enter{
+        opacity:0;
+        transform: translateY(30px)
+    }
+    .neo-list-enter-active, .neo-list-leave-active {
+        transition: all .5s linear;
+    }
+
 </style>
