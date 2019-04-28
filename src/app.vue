@@ -1,16 +1,31 @@
 <template>
     <div class="container">
+        <div class="card">
+            <h2 class="card-header">EPIC Picture of the Day. </h2>
+            <table class="table table-light">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Identifier</th>
+                    <th>Image</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(record,index) in records">
+                    <td>{{index+1}}</td>
+                    <td>{{record.identifier}}</td>
+                    <td v-html="getImage(record)" title="click here for enlarged image"></td>
+                </tr>
 
-            <h2 class="card-header">Astronomy Picture of the Day. {{date}}</h2>
-            <img :src="url" class="img-fluid" :title="title">
+                </tbody>
+            </table>
             <h3 class="card-footer">from NASA.gov</h3>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
-    /**
-     * Use of getter and setter to computed value to simplify two way conversion of temperature.
-     */
+
     import Vue from 'vue';
     import axios from 'axios';
 
@@ -18,28 +33,32 @@
         {
             data() {
                 return {
-                    url:"",
-                    title:"",
-                    date:""
+                    records: {} as any
                 }
             },
             methods: {
-                fetchAPOD : function () {
-                 //   let apiKey = 'DEMO_KEY'; //replace with real apikey. demo key is for limited use only
-                    let apiKey = '7mUh8iioKZFlbIvludFrzdeUauQeReg35rNZUqyE' //nasa.gov api key for dutch@adachis.info
-                    let url = 'https://api.nasa.gov/planetary/apod?api_key=' + apiKey;
+                fetchEPIC: function () {
+                    let apiKey = 'DEMO_KEY'; //replace with real apikey. demo key is for limited use only
+                    let url = 'https://api.nasa.gov/EPIC/api/natural/images?api_key=' + apiKey;
                     axios.get(url)
                         .then((res) => {
-                           this.url=res.data.url;
-                           this.title=res.data.title;
-                            this.date=res.data.date;
+                            this.records = res.data;
                         })
                 },
+                getImage: function (a: any) {
+                    let url = `https://epic.gsfc.nasa.gov/archive/natural/`
+                        + a.identifier.substr(0, 4) + '/' //year
+                        + a.identifier.substr(4, 2) + '/'  // month
+                        + a.identifier.substr(6, 2)   //day
+                        ;
+                    return `<a href="${url}/jpg/${a.image}.jpg"><img src="${url}/thumbs/${a.image}.jpg"></a>`
+                }
 
             },
 
+
             created: function () {
-                this.fetchAPOD();
+                this.fetchEPIC();
             }
 
         }
@@ -47,5 +66,7 @@
 </script>
 
 <style scoped>
-    [v-cloak] {display:none}
+    [v-cloak] {
+        display: none
+    }
 </style>
