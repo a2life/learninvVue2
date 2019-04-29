@@ -57,15 +57,14 @@
             },
             methods: {
                 fetchEPIC: function () {
-                    //let apiKey = 'DEMO_KEY'; //replace with real apikey. demo key is for limited use only
-                    let apiKey = '7mUh8iioKZFlbIvludFrzdeUauQeReg35rNZUqyE' //nasa.gov api key for dutch@adachis.info
+                    let apiKey = 'DEMO_KEY'; //replace with real apikey. demo key is for limited use only
                     let url = 'https://api.nasa.gov/EPIC/api/natural/images?api_key=' + apiKey;
                     axios.get(url)
                         .then((res) => {
                             this.records = res.data;
                         })
                 },
-                getImageThumbs: function (a: any) {
+                getImageThumbs: function (a:any) {
                     let url = `https://epic.gsfc.nasa.gov/archive/natural/`
                         + a.identifier.substr(0, 4) + '/' //year
                         + a.identifier.substr(4, 2) + '/'  // month
@@ -73,7 +72,7 @@
                     ;
                     return `<a href="${url}/jpg/${a.image}.jpg"><img src="${url}/thumbs/${a.image}.jpg"></a>`
                 },
-                getImageSrc: function (a: any) {
+                getImageSrc: function (a:any) {
                     let url = `https://epic.gsfc.nasa.gov/archive/natural/`
                         + a.identifier.substr(0, 4) + '/' //year
                         + a.identifier.substr(4, 2) + '/'  // month

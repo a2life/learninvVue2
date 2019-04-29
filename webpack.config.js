@@ -1,8 +1,9 @@
-let path = require('path');
+let path =require('path');
 let webpack = require('webpack');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin'); //new in vue-loader 15
 const MiniCssExtractPlugin=require('mini-css-extract-plugin')// extract css from bundle.
+
 module.exports = {
     entry: './src/main.ts',
     output: {
@@ -24,10 +25,13 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.tsx?$/, loader:
+                test: /\.(ts|js)x?$/,
+                exclude: /node_modules/,
+                loader:
                     'ts-loader',
                 options: {
                     appendTsSuffixTo: [/\.vue$/]
+
                 }
             },
             {
@@ -36,6 +40,7 @@ module.exports = {
                 options: {
                     esModule: true
                     // other vue-loader options go here
+
                 }
             },
             {
@@ -81,6 +86,7 @@ module.exports = {
 
             }
         )
+
     ],
 
     devServer: {
