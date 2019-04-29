@@ -5,3 +5,4 @@ declare module "*.vue" {
     export default Vue;
 }
 
+declare module 'bootstrap-vue/es/components/carousel';
