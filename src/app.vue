@@ -23,7 +23,6 @@
                     <th>Miss Distance</th>
                     <th>Remove</th>
                 </tr>
-                `
                 </thead>
                 <tbody v-cloak is="transition-group" name="neo-list">
                 <tr v-for="(a,index) in asteroids" :key="a.neo_reference_id"
@@ -88,8 +87,8 @@
             },
             methods: {
                 fetchAsteroids: function () {
-                    let apiKey = 'DEMO_KEY'; //replace with real apikey. demo key is for limited use only
-
+                    //let apiKey = 'DEMO_KEY'; //replace with real apikey. demo key is for limited use only
+                    let apiKey = '7mUh8iioKZFlbIvludFrzdeUauQeReg35rNZUqyE' //nasa.gov api key for dutch@adachis.info
                     let url = 'https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=' + apiKey;
                     axios.get(url)
                         .then((res) => {
