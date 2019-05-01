@@ -1,50 +1,53 @@
 <template>
     <div class="container">
-        <div class="card mt-5" v-cloak>
-            <h2 class="card-header">Near-Earth Objects</h2>
-            <transition name="flippy">
-                <div class="m-3" v-cloak v-if="numAsteroids>0 && showSummary">
-                    <p>Showing {{numAsteroids}} items</p>
-                    <p>{{closestObject.name}} has the shortest missing distance of {{closestObject.miles}} miles </p>
-                </div>
-            </transition>
-
-            <div class="m-3">
-                <a href="#" @click="showSummary = !showSummary">Show/hide Summary</a>
+    <div class="card mt-5" v-cloak>
+        <h2 class="card-header">Near-Earth
+            <transition name="spin" appear>
+                <span style="display:inline-block;">Objects</span>
+            </transition></h2>
+        <transition name="flippy">
+            <div class="m-3" v-cloak v-if="numAsteroids>0 && showSummary">
+                <p>Showing {{numAsteroids}} items</p>
+                <p>{{closestObject.name}} has the shortest missing distance of {{closestObject.miles}} miles </p>
             </div>
+        </transition>
 
-            <table class="table table-striped" v-cloak>
-
-                <thead class="thead-light">
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Close Approach Date</th>
-                    <th>Miss Distance</th>
-                    <th>Remove</th>
-                </tr>
-                </thead>
-                <tbody v-cloak is="transition-group" name="neo-list">
-                <tr v-for="(a,index) in asteroids" :key="a.neo_reference_id"
-                    :class="[{missingData:isDataMissing(a)}, 'shadow-sm']" >
-                    <td>{{index+1}}</td>
-                    <td>{{a.name}}</td>
-                    <td>{{getCloseApproachDate(a)}}</td>
-                    <td>
-                        <ul v-if="a.close_approach_data.length>0">
-                            <li v-for="(value,key) in a.close_approach_data[0].miss_distance">
-                                {{key}}:{{value}}
-                            </li>
-                        </ul>
-                    </td>
-                    <td>
-                        <button @click="remove(index)" class="bton btn-warning">remove</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="m-3">
+            <a href="#" @click="showSummary = !showSummary">Show/hide Summary</a>
         </div>
+
+        <table class="table table-striped" v-cloak>
+
+            <thead class="thead-light">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Close Approach Date</th>
+                <th>Miss Distance</th>
+                <th>Remove</th>
+            </tr>
+            </thead>
+            <tbody v-cloak is="transition-group" name="neo-list">
+            <tr v-for="(a,index) in asteroids" :key="a.neo_reference_id"
+                :class="[{missingData:isDataMissing(a)}, 'shadow-sm']" >
+                <td>{{index+1}}</td>
+                <td>{{a.name}}</td>
+                <td>{{getCloseApproachDate(a)}}</td>
+                <td>
+                    <ul v-if="a.close_approach_data.length>0">
+                        <li v-for="(value,key) in a.close_approach_data[0].miss_distance">
+                            {{key}}:{{value}}
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <button @click="remove(index)" class="bton btn-warning">remove</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
+</div>
 </template>
 
 <script lang="ts">
@@ -87,8 +90,7 @@
             },
             methods: {
                 fetchAsteroids: function () {
-                    //let apiKey = 'DEMO_KEY'; //replace with real apikey. demo key is for limited use only
-                    let apiKey = '7mUh8iioKZFlbIvludFrzdeUauQeReg35rNZUqyE' //nasa.gov api key for dutch@adachis.info
+                    let apiKey = 'DEMO_KEY'; //replace with real apikey. demo key is for limited use only
                     let url = 'https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=' + apiKey;
                     axios.get(url)
                         .then((res) => {
@@ -146,6 +148,20 @@
     }
     .neo-list-enter-active, .neo-list-leave-active {
         transition: all .5s linear;
+    }
+    .spin-enter-active {
+        animation: spin-steps 2s;
+    }
+    @keyframes spin-steps {
+        0% {
+            transform: scale(1) rotate(0);
+        }
+        50% {
+            transform: scale(10) rotate(360deg);
+        }
+        100%{
+            transform: scale(1) rotate(1080deg);
+        }
     }
 
 </style>
