@@ -2,21 +2,21 @@
     <div class="container">
         <div class="card">
             <b-carousel
-                id="epic-carousel"
-                style="text-shadow: 0 0 2px #000"
-                fade
-                img-width="1024"
-                img-height="480"
-                >
-           <template v-for="record in records" >
-            <b-carousel-slide
-                    :caption="record.caption"
-                    :img-src="getImageSrc(record)"
-                    :key="record.identifier"
-                    :id="record.identifier"
-            ></b-carousel-slide>
-        </template>
-        </b-carousel>
+                    id="epic-carousel"
+                    style="text-shadow: 0 0 2px #000"
+                    fade
+                    img-width="1024"
+                    img-height="480"
+            >
+                <template v-for="record in records">
+                    <b-carousel-slide
+                            :caption="record.caption"
+                            :img-src="getImageSrc(record)"
+                            :key="record.identifier"
+                            :id="record.identifier"
+                    ></b-carousel-slide>
+                </template>
+            </b-carousel>
         </div>
 
         <div class="card">
@@ -64,7 +64,7 @@
                             this.records = res.data;
                         })
                 },
-                getImageThumbs: function (a:any) {
+                getImageThumbs: function (a: any) {
                     let url = `https://epic.gsfc.nasa.gov/archive/natural/`
                         + a.identifier.substr(0, 4) + '/' //year
                         + a.identifier.substr(4, 2) + '/'  // month
@@ -72,7 +72,7 @@
                     ;
                     return `<a href="${url}/jpg/${a.image}.jpg"><img src="${url}/thumbs/${a.image}.jpg"></a>`
                 },
-                getImageSrc: function (a:any) {
+                getImageSrc: function (a: any) {
                     let url = `https://epic.gsfc.nasa.gov/archive/natural/`
                         + a.identifier.substr(0, 4) + '/' //year
                         + a.identifier.substr(4, 2) + '/'  // month

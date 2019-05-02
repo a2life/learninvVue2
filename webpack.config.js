@@ -1,14 +1,13 @@
-let path =require('path');
+let path = require('path');
 let webpack = require('webpack');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin'); //new in vue-loader 15
-const MiniCssExtractPlugin=require('mini-css-extract-plugin')// extract css from bundle.
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')// extract css from bundle.
 
 module.exports = {
     entry: './src/main.ts',
     output: {
         path: path.resolve(__dirname, './app'),
-
         filename: 'app.js'
     },
     resolve:
@@ -27,12 +26,14 @@ module.exports = {
             {
                 test: /\.(ts|js)x?$/,
                 exclude: /node_modules/,
+
                 loader:
                     'ts-loader',
                 options: {
                     appendTsSuffixTo: [/\.vue$/]
 
                 }
+
             },
             {
                 test: /\.vue$/,
@@ -46,12 +47,12 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                   process.env.NODE_ENV !=='production'
-                    ? 'vue-style-loader'
-                       : MiniCssExtractPlugin.loader,
+                    process.env.NODE_ENV !== 'production'
+                        ? 'vue-style-loader'
+                        : MiniCssExtractPlugin.loader,
                     'css-loader'
 
-            ]
+                ]
             },
             {
                 test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
